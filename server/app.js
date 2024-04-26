@@ -1,19 +1,24 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();    
+}
+
 const express = require("express");
 const app = express();
-const port = 3000; 
+
 const router = require("./Routers/index");
 const errorHandler = require("./middleware/errorHandlers");
 
-// body parser
-app.use(express.urlencoded({extended: false}));
+// body parser (Middleware)'
 app.use(express.json())
+app.use(express.urlencoded({extended: true}));
 
-// routing
+const cors = require("cors");
+app.use(cors());
+
+// Routers
 app.use(router);
+// Error Handlers
 app.use(errorHandler);
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-});
-
+//Start Server
 module.exports = app;
